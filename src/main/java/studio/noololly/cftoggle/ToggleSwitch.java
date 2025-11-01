@@ -1,5 +1,6 @@
 package studio.noololly.cftoggle;
 
+import javafx.animation.Animation;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -49,14 +50,27 @@ public class ToggleSwitch extends Parent {
 
         switchedOn.addListener((obs, oldState, newState) -> {
             boolean isOn = newState;
-            translationAnimation.setToX(isOn ? 100 - 50 : 0);
-            fillAnimation.setFromValue(isOn ? Color.WHITE : Color.LIGHTGREEN);
-            fillAnimation.setToValue(isOn ? Color.LIGHTGREEN : Color.WHITE);
+            translationAnimation.setToX(isOn ? (background.getWidth() - trigger.getRadius() * 2) : 0);
+            Color from = (Color) background.getFill();
+            Color to = isOn ? Color.LIGHTGREEN : Color.WHITE;
+            fillAnimation.setFromValue(from);
+            fillAnimation.setToValue(to);
 
-            animation.play();
+            /* Debounce Logic*/
+
+            setMouseTransparent(true);
+            animation.playFromStart();
+            animation.setOnFinished(e -> {
+                background.setFill(to);
+                setMouseTransparent(false);
+            });
         });
 
-        setOnMouseClicked(event -> switchedOn.set(!switchedOn.get()));
-
+        setOnMouseClicked(event -> {
+            if (animation.getStatus() == Animation.Status.RUNNING) {
+                return;
+            }
+            switchedOn.set(!switchedOn.get());
+        });
     }
 }
