@@ -1,0 +1,26 @@
+name: build.yml
+on: [ push, workflow_dispatch ]
+
+env:
+  JAVA_VERSION: 21
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Environment Variables
+        run: env
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "microsoft"
+          java-version: "${{env.JAVA_VERSION}}"
+
+      - name: Verify build
+        run: mvn --batch-mode --update-snapshots verify
