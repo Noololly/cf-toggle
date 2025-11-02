@@ -1,4 +1,4 @@
-package studio.noololly.cftoggle;
+package studio.noololly.cftoggle.gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,8 +18,6 @@ public class ApplicationMain extends Application {
     private Parent createContent() {
         Pane root = new Pane();
         root.setPrefSize(300, 300);
-
-        /*Layout goop*/
 
         Rectangle bg = new Rectangle(300, 300);
         bg.setFill(Color.BLACK);
@@ -41,6 +39,7 @@ public class ApplicationMain extends Application {
             text.setX((width - textWidth) / 2.0);
         };
 
+        /* Resizing goop to keep text centred */
         root.widthProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));
         text.textProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));
         text.fontProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));

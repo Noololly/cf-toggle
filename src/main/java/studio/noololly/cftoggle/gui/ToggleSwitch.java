@@ -1,4 +1,4 @@
-package studio.noololly.cftoggle;
+package studio.noololly.cftoggle.gui;
 
 import javafx.animation.Animation;
 import javafx.animation.FillTransition;
