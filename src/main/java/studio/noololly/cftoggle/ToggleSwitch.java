@@ -52,7 +52,7 @@ public class ToggleSwitch extends Parent {
             boolean isOn = newState;
             translationAnimation.setToX(isOn ? (background.getWidth() - trigger.getRadius() * 2) : 0);
             Color from = (Color) background.getFill();
-            Color to = isOn ? Color.LIGHTGREEN : Color.WHITE;
+            Color to = isOn ? Color.web("#D46300") : Color.WHITE;
             fillAnimation.setFromValue(from);
             fillAnimation.setToValue(to);
 

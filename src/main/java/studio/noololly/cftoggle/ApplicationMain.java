@@ -1,10 +1,11 @@
 package studio.noololly.cftoggle;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -18,21 +19,40 @@ public class ApplicationMain extends Application {
         Pane root = new Pane();
         root.setPrefSize(300, 300);
 
+        /*Layout goop*/
+
         Rectangle bg = new Rectangle(300, 300);
         bg.setFill(Color.BLACK);
 
         ToggleSwitch toggle = new ToggleSwitch();
-        toggle.setTranslateX(100);
-        toggle.setTranslateY(100);
+        toggle.setLayoutX(100.5);
+        toggle.setLayoutY(137.5);
 
         Text text = new Text();
-        text.setFont(Font.font(18));
+        text.setFont(Font.font(24));
         text.setFill(Color.WHITE);
-        text.setTranslateX(100);
-        text.setTranslateY(200);
-        text.textProperty().bind(Bindings.when(toggle.switchedOnProperty()).then("ON").otherwise("OFF"));
+        text.textProperty().bind(Bindings.when(toggle.switchedOnProperty()).then("ON").otherwise("OFF")); //TODO make this reflect system status. Binding to a status variable??
+        text.fillProperty().bind(Bindings.when(toggle.switchedOnProperty()).then(Color.web("#D46300")).otherwise(Color.WHITE));
+        text.setY(88);
 
-        root.getChildren().addAll(bg, toggle, text);
+        Runnable updateX = () -> {
+            double width = root.getWidth();
+            double textWidth = text.getBoundsInLocal().getWidth();
+            text.setX((width - textWidth) / 2.0);
+        };
+
+        root.widthProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));
+        text.textProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));
+        text.fontProperty().addListener((obs, oldV, newV) -> Platform.runLater(updateX));
+
+        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                Platform.runLater(updateX);
+            }
+        });
+
+        root.getChildren().addAll(bg, text, toggle);
+
         return root;
     }
 
