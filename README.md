@@ -10,8 +10,8 @@ Currently, this is a WIP.
 
 # Running this in a dev environment
 
-Make sure that you have maven, then run the Launcher class' main method to start this in a dev environment. 
+Run the Maven javafx:run macro to run this.
 
-I will make a GitHub workflow that compiles each push into a jar file, and put a release out there with a compiled jar when I get to a point where I am happy!
+I'll make  a release tag with a compiled jar when I get to a point where I am happy!
 
 <3 Happy Hacking
