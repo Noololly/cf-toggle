@@ -4,8 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.scene.Parent;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -15,15 +15,19 @@ import javafx.util.Duration;
 
 public class ToggleSwitch extends Parent {
 
-    private final BooleanProperty switchedOn = new SimpleBooleanProperty(false);
+    private final ReadOnlyBooleanWrapper switchedOn = new ReadOnlyBooleanWrapper(this, "switchedOn", false);
 
     private final TranslateTransition translationAnimation = new TranslateTransition(Duration.seconds(0.25));
     private final FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
 
     private final ParallelTransition animation = new ParallelTransition(translationAnimation, fillAnimation);
 
-    public BooleanProperty switchedOnProperty() {
-        return switchedOn;
+    public ReadOnlyBooleanProperty switchedOnProperty() {
+        return switchedOn.getReadOnlyProperty();
+    }
+
+    public boolean isSwitchedOn() {
+        return switchedOn.get();
     }
 
     public ToggleSwitch() {
